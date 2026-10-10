@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🌸 پیست پیست این چیه</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Vazirmatn',system-ui,sans-serif;color:#3a1f38;direction:rtl;
+  background:#ffe9df}
+
+/* ============ BACKGROUND: سپیده‌دم بهاری ============ */
+#bg{position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255,200,220,.9) 0%, transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(180,240,220,.85) 0%, transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(255,220,180,.5) 0%, transparent 70%),
+    linear-gradient(160deg,#ffd9c8 0%,#ffc4d6 35%,#c8e8e0 70%,#e0d4ff 100%);
+  animation:bgShift 24s ease-in-out infinite alternate}
+@keyframes bgShift{0%{filter:hue-rotate(0) brightness(1)}100%{filter:hue-rotate(20deg) brightness(1.06)}}
+
+/* خورشید ملایم */
+#sun{position:fixed;top:-120px;right:-120px;width:520px;height:520px;z-index:1;
+  border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,235,180,.95) 0%,rgba(255,210,140,.55) 30%,transparent 70%);
+  filter:blur(4px);
+  animation:sunPulse 8s ease-in-out infinite}
+@keyframes sunPulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.08);opacity:1}}
+
+#petals{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+
+/* ============ GATES ============ */
+.gate{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:26px 16px;opacity:0;pointer-events:none;transform:scale(.93) translateY(14px);transition:opacity .65s ease,transform .65s cubic-bezier(.2,1.1,.35,1);overflow-y:auto}
+.gate.active{opacity:1;pointer-events:auto;transform:scale(1) translateY(0)}
+.gate-inner{
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.75);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border-radius:30px;padding:34px 24px 30px;max-width:530px;width:100%;text-align:center;
+  box-shadow:0 30px 70px rgba(180,90,140,.22),
+             inset 0 1px 0 rgba(255,255,255,.9),
+             0 0 60px rgba(255,180,210,.25);
+  position:relative;overflow:hidden;margin:auto}
+.gate-inner::before{content:'';position:absolute;inset:-2px;
+  background:radial-gradient(circle at 50% 0%, rgba(255,180,220,.35), transparent 65%);pointer-events:none}
+
+.g-title{font-size:clamp(1.25rem,4.8vw,1.75rem);font-weight:900;margin:14px 0 8px;line-height:1.6;
+  background:linear-gradient(180deg,#7a2f5c,#c9548a);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 0 rgba(255,255,255,.5))}
+.g-sub{font-size:clamp(.88rem,3.4vw,1rem);color:rgba(70,30,60,.78);line-height:2;margin:8px 0 18px}
+.g-hint{font-size:.78rem;color:rgba(90,40,80,.55);margin-top:16px;min-height:1.2em;transition:color .3s}
+.g-hint.warn{color:#d4547f}.g-hint.ok{color:#2a9d7a}
+
+.btn{font-family:inherit;font-size:clamp(.9rem,3.4vw,1rem);font-weight:700;padding:13px 28px;border-radius:50px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#ff8fb8,#e85b95);
+  color:#fff;margin:5px;
+  box-shadow:0 10px 26px rgba(232,91,149,.45),inset 0 1px 0 rgba(255,255,255,.5);
+  transition:transform .25s cubic-bezier(.2,1.5,.4,1),box-shadow .25s}
+.btn:hover{transform:translateY(-3px) scale(1.045);box-shadow:0 16px 40px rgba(232,91,149,.6)}
+.btn:active{transform:scale(.96)}
+.btn.ghost{background:rgba(255,255,255,.65);border:1px solid rgba(200,120,160,.3);color:#7a2f5c;box-shadow:0 6px 18px rgba(180,90,140,.12)}
+.btn.ghost:hover{background:rgba(255,255,255,.9)}
+.btn.mint{background:linear-gradient(135deg,#7ed8b8,#3fa88a);box-shadow:0 10px 26px rgba(63,168,138,.45),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn.mint:hover{box-shadow:0 16px 40px rgba(63,168,138,.6)}
+.btn.big{font-size:1.1rem;padding:16px 38px}
+.btn-row{display:flex;justify-content:center;flex-wrap:wrap;gap:6px}
+
+/* ============ GATE 1: غنچه ============ */
+.bud{position:relative;display:inline-block;font-size:clamp(4.5rem,20vw,6.5rem);line-height:1;
+  cursor:pointer;user-select:none;
+  animation:budBob 3.4s ease-in-out infinite;
+  transition:transform .35s cubic-bezier(.2,1.6,.4,1);
+  filter:drop-shadow(0 14px 30px rgba(232,91,149,.5))}
+.bud:hover{transform:scale(1.08) rotate(-3deg)}
+.bud:active{transform:scale(.94)}
+@keyframes budBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.bud.open{animation:budOpen .9s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes budOpen{0%{transform:scale(1)}30%{transform:scale(1.35) rotate(12deg);filter:brightness(1.5)}60%{transform:scale(1.15) rotate(-6deg)}100%{transform:scale(1.2);filter:brightness(1.3)}}
+
+.name-badge{display:inline-block;margin:14px 0 20px;padding:10px 34px;border-radius:99px;
+  font-size:clamp(1.2rem,5vw,1.55rem);font-weight:900;letter-spacing:1px;
+  background:linear-gradient(135deg,rgba(255,180,220,.6),rgba(180,240,220,.6));
+  border:2px solid rgba(255,255,255,.9);
+  color:#7a2f5c;
+  box-shadow:0 8px 30px rgba(232,91,149,.3),inset 0 1px 0 rgba(255,255,255,.9);
+  animation:badgeGlow 2.8s ease-in-out infinite}
+@keyframes badgeGlow{0%,100%{box-shadow:0 8px 30px rgba(232,91,149,.3)}50%{box-shadow:0 10px 40px rgba(232,91,149,.55)}}
+
+/* ============ CHARACTER: پری کوچک ============ */
+.char{width:min(200px,48vw);height:auto;display:block;margin:0 auto;animation:bob 2.6s ease-in-out infinite;
+  filter:drop-shadow(0 18px 34px rgba(200,120,180,.4))}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(2deg)}}
+.char.shake{animation:shakeX .5s ease}
+@keyframes shakeX{0%,100%{transform:translateX(0)}20%{transform:translateX(-11px) rotate(-3deg)}40%{transform:translateX(11px) rotate(3deg)}60%{transform:translateX(-7px)}80%{transform:translateX(7px)}}
+
+/* ============ GATE 4: آب دادن ============ */
+#waterTap{font-size:clamp(3.4rem,16vw,4.6rem);line-height:1;cursor:pointer;user-select:none;display:inline-block;
+  transition:transform .16s cubic-bezier(.2,1.8,.4,1);
+  filter:drop-shadow(0 10px 26px rgba(120,200,180,.7))}
+#waterTap:active{transform:scale(.82)}
+#plantMeter{width:min(260px,72vw);height:14px;margin:20px auto 10px;border-radius:99px;
+  background:rgba(180,220,210,.35);overflow:hidden;border:1px solid rgba(120,200,180,.4)}
+#plantMeterFill{height:100%;width:0%;border-radius:99px;
+  background:linear-gradient(90deg,#7ed8b8,#ffd970);
+  box-shadow:0 0 20px rgba(120,220,180,.9);
+  transition:width .4s cubic-bezier(.2,1.2,.3,1)}
+.pop-drop{position:fixed;z-index:95;pointer-events:none;font-size:1.6rem;
+  animation:popUp 1.4s ease-out forwards}
+@keyframes popUp{0%{opacity:1;transform:translate(-50%,-50%) scale(.4)}100%{opacity:0;transform:translate(-50%,-260%) scale(1.7)}}
+
+/* plant growth stages */
+.plant-stage{font-size:clamp(3rem,14vw,4.4rem);line-height:1;display:inline-block;transition:transform .4s cubic-bezier(.2,1.6,.4,1)}
+
+/* ============ OPTIONS ============ */
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.opt{font-family:inherit;font-size:clamp(.8rem,3.2vw,.95rem);font-weight:700;padding:14px 8px;border-radius:18px;cursor:pointer;
+  background:rgba(255,255,255,.7);border:1px solid rgba(200,140,180,.3);color:#5a2a48;transition:.25s}
+.opt:hover{background:rgba(255,255,255,.95);transform:translateY(-2px);box-shadow:0 10px 24px rgba(200,120,180,.2)}
+.opt.wrong{animation:shakeX .45s;border-color:#ff8fa8;background:rgba(255,180,200,.5)}
+.opt.right{background:linear-gradient(135deg,rgba(180,255,220,.7),rgba(255,230,150,.7));border-color:#3fa88a;box-shadow:0 0 26px rgba(120,220,180,.5)}
+
+/* ============ GATE 5: قاصدک ============ */
+.dandelion-wrap{position:relative;display:inline-block;margin:16px 0 10px;cursor:pointer;user-select:none;transition:transform .3s}
+.dandelion-wrap:active{transform:scale(.94)}
+.dandelion{font-size:clamp(4.5rem,20vw,6rem);line-height:1;display:block;
+  animation:floaty 3s ease-in-out infinite;
+  filter:drop-shadow(0 8px 20px rgba(255,200,150,.6))}
+.dandelion.blown{animation:blowAway 1.2s ease forwards}
+@keyframes blowAway{
+  0%{transform:scale(1);opacity:1}
+  40%{transform:scale(1.15) rotate(8deg);opacity:.8}
+  100%{transform:scale(.7) translateY(-40px);opacity:0}
+}
+.seed{position:fixed;z-index:96;pointer-events:none;font-size:1.4rem;
+  animation:seedFly 2.5s cubic-bezier(.2,.6,.4,1) forwards;
+  filter:drop-shadow(0 0 10px rgba(255,240,200,.9))}
+@keyframes seedFly{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(.4) rotate(0)}
+  100%{opacity:0;transform:translate(-50%,-50%) translate(var(--dx,100px),var(--dy,-300px)) scale(1.3) rotate(360deg)}
+}
+
+/* ============ GATE 6: پروانه‌ها ============ */
+.butterfly-field{position:relative;width:100%;height:200px;margin:14px 0 4px;overflow:hidden;border-radius:22px;
+  background:linear-gradient(180deg,rgba(255,240,220,.4),rgba(220,240,255,.3));
+  border:1px solid rgba(255,255,255,.7)}
+.bf{position:absolute;font-size:2.6rem;cursor:pointer;user-select:none;
+  filter:drop-shadow(0 6px 14px rgba(200,120,180,.5));
+  animation:bfFloat linear infinite;
+  transition:transform .2s}
+.bf:hover{transform:scale(1.2)}
+.bf.caught{animation:catchPop .6s ease forwards;pointer-events:none}
+@keyframes catchPop{0%{transform:scale(1)}50%{transform:scale(1.6);filter:brightness(1.6)}100%{transform:scale(0);opacity:0}}
+@keyframes bfFloat{
+  0%{transform:translate(0,0) rotate(-8deg)}
+  25%{transform:translate(20px,-15px) rotate(8deg)}
+  50%{transform:translate(-15px,-25px) rotate(-8deg)}
+  75%{transform:translate(15px,-10px) rotate(8deg)}
+  100%{transform:translate(0,0) rotate(-8deg)}
+}
+
+/* ============ INPUT ============ */
+#g8input{font-family:inherit;font-size:1.05rem;text-align:center;width:min(280px,85%);padding:14px 18px;margin:6px auto 14px;
+  border-radius:16px;border:2px solid rgba(200,140,180,.35);
+  background:rgba(255,255,255,.75);color:#5a2a48;outline:none;display:block;transition:.3s}
+#g8input:focus{border-color:#e85b95;box-shadow:0 0 30px rgba(232,91,149,.35);background:rgba(255,255,255,.95)}
+#g8input::placeholder{color:rgba(140,90,120,.5)}
+
+/* ============ GATE 9: بذر جادویی ============ */
+.seed-plant{font-size:clamp(4rem,18vw,5.6rem);line-height:1;cursor:pointer;user-select:none;display:inline-block;
+  transition:transform .35s cubic-bezier(.2,1.6,.4,1);
+  animation:floaty 3s ease-in-out infinite;
+  filter:drop-shadow(0 12px 26px rgba(120,200,180,.55))}
+.seed-plant.planted{animation:plantGrow 1.2s cubic-bezier(.2,1.5,.4,1) forwards}
+@keyframes plantGrow{
+  0%{transform:scale(1)}
+  35%{transform:scale(1.3) rotate(-6deg);filter:brightness(1.5)}
+  70%{transform:scale(1.15) rotate(4deg)}
+  100%{transform:scale(1.25);filter:brightness(1.4)}
+}
+
+/* ============ GATE 10: دسته‌گل ============ */
+.bouquet{display:flex;justify-content:center;gap:8px;margin:18px 0 4px;flex-wrap:wrap}
+.bq{font-size:clamp(2.2rem,10vw,3rem);background:none;border:none;cursor:pointer;
+  filter:drop-shadow(0 6px 16px rgba(232,91,149,.5));
+  transition:transform .25s cubic-bezier(.2,1.6,.4,1);
+  animation:floaty 3.2s ease-in-out infinite}
+.bq:nth-child(2){animation-delay:.4s}
+.bq:nth-child(3){animation-delay:.8s}
+.bq:nth-child(4){animation-delay:1.2s}
+.bq:nth-child(5){animation-delay:1.6s}
+.bq:hover{transform:scale(1.3) rotate(12deg)}
+.bq.chosen{animation:flyUp 1.2s cubic-bezier(.3,.9,.3,1) forwards}
+@keyframes flyUp{0%{transform:scale(1)}100%{transform:translateY(-75vh) scale(.2);opacity:0}}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-16px) rotate(4deg)}}
+
+/* ============ BREATHE ============ */
+.breath-circle{width:clamp(90px,24vw,120px);height:clamp(90px,24vw,120px);border-radius:50%;margin:6px auto 22px;
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.95),rgba(180,240,220,.7) 45%,rgba(255,180,220,.5) 75%);
+  box-shadow:0 0 60px rgba(200,150,220,.4),inset 0 0 40px rgba(255,255,255,.5);
+  animation:breathe 8s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(.72);opacity:.7}50%{transform:scale(1.22);opacity:1}}
+.big-emoji{font-size:clamp(3.4rem,15vw,4.6rem);line-height:1;animation:floaty 3s ease-in-out infinite;filter:drop-shadow(0 12px 26px rgba(232,91,149,.5))}
+
+/* ============ COUNTDOWN ============ */
+#countdown{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;
+  font-size:32vmin;font-weight:900;color:#ffd970;
+  text-shadow:0 0 40px rgba(255,180,90,.95),0 0 90px rgba(232,91,149,.7);
+  opacity:0;pointer-events:none;transition:opacity .3s}
+#countdown.show{opacity:1}
+@keyframes pop{0%{transform:scale(.3);opacity:0}30%{transform:scale(1.15);opacity:1}100%{transform:scale(1.9);opacity:0}}
+
+/* ============ GIFT PAGE ============ */
+#gift{position:fixed;inset:0;z-index:20;display:none;overflow:hidden;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,200,220,.7) 0%, transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(180,240,220,.6) 0%, transparent 55%),
+    linear-gradient(160deg,#ffd9c8,#ffc4d6 35%,#c8e8e0 70%,#e0d4ff)}
+#gift.show{display:block}
+#stage{position:absolute;left:50%;top:50%;width:1000px;height:1000px;
+  transform-origin:50% 50%;transform:translate(-50%,-50%) scale(var(--stage-scale,1))}
+
+/* ============ گل رز بزرگ پشت ============ */
+#roseGlow{
+  position:absolute;left:50%;top:50%;width:900px;height:900px;
+  transform:translate(-50%,-50%);border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(255,240,220,.98) 0%,
+      rgba(255,200,220,.75) 22%,
+      rgba(255,160,200,.5) 42%,
+      rgba(200,220,255,.3) 62%,
+      transparent 82%);
+  filter:blur(14px);
+  opacity:0;transition:opacity 2.5s ease;
+  z-index:0;
+}
+#roseGlow.on{opacity:1;animation:roseBeat 2.4s ease-in-out infinite 2s}
+@keyframes roseBeat{
+  0%,100%{transform:translate(-50%,-50%) scale(1);filter:blur(14px) brightness(1)}
+  18%{transform:translate(-50%,-50%) scale(1.04);filter:blur(14px) brightness(1.3)}
+  36%{transform:translate(-50%,-50%) scale(1)}
+  54%{transform:translate(-50%,-50%) scale(1.03);filter:blur(14px) brightness(1.2)}
+  72%{transform:translate(-50%,-50%) scale(1)}
+}
+
+#heartWords{position:absolute;inset:0;z-index:2}
+.hw{
+  position:absolute;opacity:0;white-space:nowrap;text-align:center;
+  color:#5a2a48;font-weight:700;
+  text-shadow:
+    0 0 8px rgba(255,255,255,.95),
+    0 0 20px rgba(255,220,240,.9),
+    0 0 40px rgba(232,150,200,.6);
+  transition:opacity .9s ease,transform 1s cubic-bezier(.18,1.3,.35,1);
+  line-height:1}
+.hw.on{opacity:.98}
+
+#mainText{position:absolute;left:50%;top:46%;z-index:3;
+  transform:translate(-50%,-50%) scale(.5);opacity:0;text-align:center;white-space:nowrap;
+  transition:opacity 1.4s ease,transform 1.4s cubic-bezier(.16,1.4,.35,1);pointer-events:none}
+#mainText.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#mainText .l1{
+  font-weight:900;line-height:1.2;
+  background:linear-gradient(180deg,#a13068 0%,#e85b95 45%,#ffb060 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 24px rgba(255,220,240,1)) drop-shadow(0 0 60px rgba(255,180,220,.9));
+  animation:titleGlow 2.6s ease-in-out infinite}
+#mainText .l2{
+  font-weight:900;line-height:1.4;
+  background:linear-gradient(180deg,#a13068 0%,#ff9fc8 50%,#7ed8b8 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 24px rgba(255,220,240,1)) drop-shadow(0 0 60px rgba(200,240,220,.9));
+  animation:titleGlow 2.6s ease-in-out infinite .5s}
+@keyframes titleGlow{
+  0%,100%{filter:drop-shadow(0 0 18px rgba(255,220,240,.9)) drop-shadow(0 0 46px rgba(232,91,149,.6))}
+  50%{filter:drop-shadow(0 0 34px rgba(255,220,240,1)) drop-shadow(0 0 90px rgba(232,91,149,.9))}
+}
+
+/* ============ GARDEN (گلبرگ + قاصدک + پروانه) ============ */
+#garden{position:fixed;inset:0;z-index:30;pointer-events:none;overflow:hidden}
+.float-el{position:absolute;top:-12vh;will-change:transform;
+  animation-name:fall;animation-timing-function:linear;animation-iteration-count:infinite}
+.float-el-inner{display:block;animation-name:sway;animation-timing-function:ease-in-out;
+  animation-iteration-count:infinite;animation-direction:alternate;
+  filter:drop-shadow(0 2px 6px rgba(180,120,160,.4))}
+@keyframes fall{0%{transform:translateY(-14vh) translateX(0)}100%{transform:translateY(118vh) translateX(8vw)}}
+@keyframes sway{0%{transform:rotate(-32deg) translateX(-22px) scale(.92)}100%{transform:rotate(32deg) translateX(22px) scale(1.08)}}
+
+/* دانه‌های قاصدک */
+.dandy-seed{position:fixed;z-index:31;pointer-events:none;
+  font-size:14px;opacity:.9;
+  animation:seedDrift linear infinite;
+  filter:drop-shadow(0 0 6px rgba(255,240,220,.9))}
+@keyframes seedDrift{
+  0%{opacity:0;transform:translate(0,0) rotate(0)}
+  15%{opacity:1}
+  80%{opacity:.8}
+  100%{opacity:0;transform:translate(var(--dx,60px),-100vh) rotate(720deg)}
+}
+
+/* ============ FLASH ============ */
+#flash{position:fixed;inset:0;z-index:90;pointer-events:none;opacity:0;
+  background:radial-gradient(circle at 50% 46%,
+    rgba(255,255,255,1) 0%,
+    rgba(255,240,220,.95) 16%,
+    rgba(255,220,180,.65) 34%,
+    rgba(255,180,220,.35) 55%,
+    transparent 74%);
+  mix-blend-mode:screen}
+#flash.go{animation:flashAnim 1.7s ease-out forwards}
+@keyframes flashAnim{0%{opacity:0;transform:scale(.25)}14%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.75)}}
+#sweep{position:fixed;inset:0;z-index:91;pointer-events:none;
+  background:linear-gradient(105deg,transparent 34%,rgba(255,250,230,.95) 50%,transparent 66%);
+  transform:translateX(-130%);mix-blend-mode:screen}
+#sweep.go{animation:sweepAnim 1.6s cubic-bezier(.4,0,.3,1) forwards}
+@keyframes sweepAnim{0%{transform:translateX(-130%);opacity:0}10%{opacity:1}100%{transform:translateX(130%);opacity:0}}
+
+/* ============ FINAL NOTE ============ */
+#finalNote{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:14px 16px 20px;text-align:center;
+  opacity:0;transform:translateY(24px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(.2,1.2,.3,1);pointer-events:none}
+#finalNote.on{opacity:1;transform:none;pointer-events:auto}
+#finalNote .note1{font-size:clamp(.95rem,3.6vw,1.05rem);font-weight:700;margin-bottom:4px;color:#7a2f5c;
+  text-shadow:0 0 18px rgba(255,255,255,.95)}
+#finalNote .note2{font-size:clamp(.72rem,3vw,.82rem);margin-bottom:10px;color:rgba(90,40,80,.65)}
+
+@media (max-width:600px){
+  .gate{padding:18px 12px}
+  .gate-inner{padding:26px 16px 22px;border-radius:24px}
+  .options{gap:8px}
+}
+</style>
+</head>
+<body>
+
+<div id="bg"></div>
+<div id="sun"></div>
+<div id="petals"></div>
+
+<!-- ========== ۱ ========== -->
+<section class="gate active" id="gate1">
+  <div class="gate-inner">
+    <div class="bud" id="bud1">🌷</div>
+    <h1 class="g-title">یه غنچه برات رسیده...</h1>
+    <p class="g-sub">برای دختری که باغ دنیا رو شکوفا می‌کنه 🌷</p>
+    <div class="name-badge">آوا</div>
+    <div class="btn-row"><button class="btn mint" data-goto="1">بازش کن 🌸</button></div>
+  </div>
+</section>
+
+<!-- ========== ۲ ========== -->
+<section class="gate" id="gate2">
+  <div class="gate-inner">
+    <svg class="char" id="char2" viewBox="0 0 220 260">
+      <defs>
+        <linearGradient id="skin3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffe3cf"/><stop offset="100%" stop-color="#f7c3a5"/></linearGradient>
+        <linearGradient id="dress3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffb0d8"/><stop offset="100%" stop-color="#e85b95"/></linearGradient>
+        <linearGradient id="hair3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6b3a1e"/><stop offset="100%" stop-color="#3a1a0a"/></linearGradient>
+        <radialGradient id="wing" cx="50%" cy="50%"><stop offset="0%" stop-color="rgba(255,220,255,.95)"/><stop offset="70%" stop-color="rgba(200,220,255,.7)"/><stop offset="100%" stop-color="rgba(160,200,255,.3)"/></radialGradient>
+      </defs>
+      <!-- بال‌های پری -->
+      <ellipse cx="42" cy="110" rx="34" ry="52" fill="url(#wing)" opacity=".8" transform="rotate(-18 42 110)"/>
+      <ellipse cx="178" cy="110" rx="34" ry="52" fill="url(#wing)" opacity=".8" transform="rotate(18 178 110)"/>
+      <!-- بدن -->
+      <path d="M110 158 c42 0 64 22 68 58 l6 30 h-148 l6-30 c4-36 26-58 68-58z" fill="url(#dress3)"/>
+      <rect x="98" y="132" width="24" height="34" rx="12" fill="#f0b99b"/>
+      <ellipse cx="110" cy="95" rx="56" ry="60" fill="url(#skin3)"/>
+      <!-- مو -->
+      <path d="M54 92 c0-44 26-68 56-68 s56 24 56 68 c0-16-8-28-18-34 c-8 0-14 4-20 10 c-8 10-20 14-34 12 c-14-2-24 0-30 8 c-6 6-10 8-10 4z" fill="url(#hair3)"/>
+      <!-- گل توی مو -->
+      <text x="70" y="50" font-size="18" text-anchor="middle">🌸</text>
+      <text x="152" y="58" font-size="14" text-anchor="middle">🌷</text>
+      <!-- چشم‌ها با مژه -->
+      <ellipse cx="88" cy="92" rx="13.5" ry="15.5" fill="#fff"/>
+      <ellipse cx="132" cy="92" rx="13.5" ry="15.5" fill="#fff"/>
+      <circle cx="88" cy="94" r="7" fill="#3a1a2a"/>
+      <circle cx="132" cy="94" r="7" fill="#3a1a2a"/>
+      <circle cx="90.5" cy="90.5" r="2.4" fill="#fff"/>
+      <circle cx="134.5" cy="90.5" r="2.4" fill="#fff"/>
+      <!-- مژه‌ها -->
+      <path d="M78 80 l-6 -3 M92 78 l0 -4 M104 80 l6 -3" stroke="#3a1a0a" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M122 80 l-6 -3 M136 78 l0 -4 M148 80 l6 -3" stroke="#3a1a0a" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M74 66 q14 -10 26 -3" stroke="#3a1a0a" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M146 66 q-14 -10 -26 -3" stroke="#3a1a0a" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="110" cy="120" rx="9" ry="11" fill="#7a2b3d"/>
+      <ellipse cx="72" cy="112" rx="11" ry="6" fill="#ff9ec2" opacity=".55"/>
+      <ellipse cx="148" cy="112" rx="11" ry="6" fill="#ff9ec2" opacity=".55"/>
+    </svg>
+    <h1 class="g-title">مطمئنی می‌خوای بیای تو باغ جادویی؟</h1>
+    <p class="g-sub" id="g2msg">آخه این باغ... یه‌کم پره از راز 🌸</p>
+    <div class="btn-row">
+      <button class="btn" id="g2yes">آره، ببرم به باغ</button>
+      <button class="btn ghost" id="g2no">نه، باغ ترسناکه</button>
+    </div>
+    <p class="g-hint" id="g2hint"></p>
+  </div>
+</section>
+
+<!-- ========== ۳ ========== -->
+<section class="gate" id="gate3">
+  <div class="gate-inner">
+    <div class="big-emoji">🌱</div>
+    <h1 class="g-title">قبلش یه قول بده</h1>
+    <p class="g-sub">قول بده هیچ‌وقت خودت رو کمتر از یه گل بهاری نبینی</p>
+    <div class="btn-row">
+      <button class="btn" id="g3yes">قول می‌دم</button>
+      <button class="btn ghost" id="g3no">قول نمی‌دم</button>
+    </div>
+    <p class="g-hint" id="g3hint"></p>
+  </div>
+</section>
+
+<!-- ========== ۴ ========== -->
+<section class="gate" id="gate4">
+  <div class="gate-inner">
+    <h1 class="g-title">به گلم آب بده 💧</h1>
+    <p class="g-sub">روی قطره بزن تا گل بزرگ شه</p>
+    <div id="waterTap">💧</div>
+    <div id="plantMeter"><div id="plantMeterFill"></div></div>
+    <div class="plant-stage" id="plantStage">🌱</div>
+    <p class="g-hint" id="g4hint">۰ از ۵</p>
+  </div>
+</section>
+
+<!-- ========== ۵ ========== -->
+<section class="gate" id="gate5">
+  <div class="gate-inner">
+    <h1 class="g-title">یه قاصدک 🌬️</h1>
+    <p class="g-sub">فوتش کن و یه آرزو کن...</p>
+    <div class="dandelion-wrap" id="dandelion">
+      <span class="dandelion" id="dandelionBody">🌼</span>
+    </div>
+    <p class="g-hint" id="g5hint">روی قاصدک بزن تا فوتش کنی</p>
+  </div>
+</section>
+
+<!-- ========== ۶ ========== -->
+<section class="gate" id="gate6">
+  <div class="gate-inner">
+    <h1 class="g-title">پروانه‌ها رو بگیر 🦋</h1>
+    <p class="g-sub">سه تا پروانه توی باغ هستن... بگیرشون</p>
+    <div class="butterfly-field" id="bfField"></div>
+    <p class="g-hint" id="g6hint">۰ از ۳ گرفته شده</p>
+  </div>
+</section>
+
+<!-- ========== ۷ ========== -->
+<section class="gate" id="gate7">
+  <div class="gate-inner">
+    <h1 class="g-title">یه معما 🤔</h1>
+    <p class="g-sub">چیزی که تازه شکفته، خوشبو، و توی خونه‌ی ماست چیه؟</p>
+    <div class="options">
+      <button class="opt" data-ok="0">گل رز 🌹</button>
+      <button class="opt" data-ok="0">شکوفه 🌸</button>
+      <button class="opt" data-ok="1">آوا 🌷</button>
+      <button class="opt" data-ok="0">لاله 🌷</button>
+    </div>
+    <p class="g-hint" id="g7hint">یکی روانتخاب کن...</p>
+  </div>
+</section>
+
+<!-- ========== ۸ ========== -->
+<section class="gate" id="gate8">
+  <div class="gate-inner">
+    <div class="big-emoji">🔑</div>
+    <h1 class="g-title">قفل باغ جادویی</h1>
+    <p class="g-sub">برای باز شدن در، اسمت رو بنویس</p>
+    <input id="g8input" type="text" placeholder="اسمت رو بنویس..." autocomplete="off">
+    <div class="btn-row"><button class="btn" id="g8btn">باز کن 🔓</button></div>
+    <p class="g-hint" id="g8hint"></p>
+  </div>
+</section>
+
+<!-- ========== ۹ ========== -->
+<section class="gate" id="gate9">
+  <div class="gate-inner">
+    <h1 class="g-title">یه بذر جادویی 🌱</h1>
+    <p class="g-sub">بکارش تا یه اتفاق قشنگ بیفته...</p>
+    <div class="seed-plant" id="seedPlant">🌰</div>
+    <p class="g-hint" id="g9hint">روی بذر بزن تا بکاریش</p>
+  </div>
+</section>
+
+<!-- ========== ۱۰ ========== -->
+<section class="gate" id="gate10">
+  <div class="gate-inner">
+    <h1 class="g-title">یه دسته‌گل بچین 💐</h1>
+    <p class="g-sub">هر گلی یه راز برات داره</p>
+    <div class="bouquet">
+      <button class="bq" data-flower="rose">🌹</button>
+      <button class="bq" data-flower="tulip">🌷</button>
+      <button class="bq" data-flower="cherry">🌸</button>
+      <button class="bq" data-flower="sun">🌻</button>
+      <button class="bq" data-flower="lotus">🪷</button>
+    </div>
+    <p class="g-hint" id="g10hint"></p>
+  </div>
+</section>
+
+<!-- ========== ۱۱ ========== -->
+<section class="gate" id="gate11">
+  <div class="gate-inner">
+    <div class="breath-circle"></div>
+    <h1 class="g-title">نفس عمیق بکش...</h1>
+    <p class="g-sub">دم... بازدم... آروم 🌬️<br>حالا آماده‌ای</p>
+    <div class="btn-row"><button class="btn" id="g11btn">آماده‌ام</button></div>
+  </div>
+</section>
+
+<!-- ========== ۱۲ ========== -->
+<section class="gate" id="gate12">
+  <div class="gate-inner">
+    <div class="big-emoji">🌸</div>
+    <h1 class="g-title">همه‌چیز آماده‌ست</h1>
+    <p class="g-sub">هدیه‌ی تو، پشت این غنچه پنهونه...</p>
+    <div class="btn-row"><button class="btn big mint" id="g12btn">غنچه رو بشکفون 🌷</button></div>
+  </div>
+</section>
+
+<!-- ========== HEDIYE ========== -->
+<section id="gift">
+  <div id="stage">
+    <div id="roseGlow"></div>
+    <div id="heartWords"></div>
+    <div id="mainText">
+      <div class="l1">آوا عزیزم</div>
+      <div class="l2">خواهر گلم، روز دختر مبارک</div>
+    </div>
+  </div>
+</section>
+
+<div id="garden"></div>
+
+<div id="finalNote">
+  <p class="note1">🌸 هر روزت روز دختر باشه، گل باغم 🌷</p>
+  <p class="note2">با عشق، برای آوا 💗</p>
+  <button class="btn ghost" id="replay">از اول ببین 🔁</button>
+</div>
+
+<div id="flash"></div>
+<div id="sweep"></div>
+<div id="countdown"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+/* ============ تشخیص موبایل ============ */
+const IS_MOBILE = window.innerWidth < 700 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+
+/* ============ گلبرگ‌های پس‌زمینه ============ */
+(function(){
+  const box = $('#petals'); const frag = document.createDocumentFragment();
+  const petalEmojis = ['🌸','🌷','🌺','💮','🌼'];
+  const count = IS_MOBILE ? 20 : 35;
+  for(let i=0;i<count;i++){
+    const p = document.createElement('i');
+    p.style.position='absolute';
+    p.textContent = petalEmojis[Math.floor(Math.random()*petalEmojis.length)];
+    p.style.left = (Math.random()*100)+'vw';
+    p.style.top = (Math.random()*100)+'vh';
+    p.style.fontSize = (10 + Math.random()*14)+'px';
+    p.style.opacity = (0.3 + Math.random()*0.5);
+    p.style.animation = `sway ${3+Math.random()*4}s ease-in-out infinite alternate`;
+    p.style.animationDelay = (-Math.random()*5)+'s';
+    frag.appendChild(p);
+  }
+  box.appendChild(frag);
+})();
+
+/* ============ ناوبری ============ */
+const gateEls = $$('.gate');
+let cur = 0;
+function goTo(idx){
+  if(idx<0||idx>=gateEls.length) return;
+  gateEls[cur].classList.remove('active');
+  cur = idx;
+  gateEls[cur].classList.add('active');
+}
+function toFa(n){ return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
+$$('[data-goto]').forEach(b=> b.addEventListener('click', ()=> goTo(parseInt(b.dataset.goto,10))));
+
+/* ============ غنچه صفحه‌ی ۱ ============ */
+(function(){
+  const bud = $('#bud1');
+  bud.addEventListener('click', ()=>{
+    bud.classList.add('open');
+    bud.textContent = '🌸';
+    setTimeout(()=> goTo(1), 900);
+  });
+})();
+
+/* ============ شمارش معکوس ============ */
+function runCountdown(cb){
+  const el = $('#countdown');
+  const nums = ['۳','۲','۱']; let i = 0;
+  el.classList.add('show');
+  (function tick(){
+    if(i>=nums.length){ el.classList.remove('show'); el.textContent=''; cb(); return; }
+    el.textContent = nums[i];
+    el.style.animation='none'; void el.offsetWidth;
+    el.style.animation='pop .95s ease-out';
+    i++; setTimeout(tick,900);
+  })();
+}
+
+/* ============ ۲ ============ */
+(function(){
+  let n = 0;
+  $('#g2yes').addEventListener('click', ()=> goTo(2));
+  $('#g2no').addEventListener('click', ()=>{
+    n++;
+    const msgs = [
+      'باشه... ولی توی باغ یه چیز خیلی قشنگ منتظرته 🌸',
+      'باغ ترسناک نیست! پره از گل و پروانه 🦋',
+      'آوا جان، به من اعتماد کن... باغ دوستته 🌷',
+      'باشه باشه، ولی یه بار دیگه فکر کن 😊',
+      'قربونت برم، دیگه نه نگو... بیا تو باغ ✨'
+    ];
+    $('#g2msg').textContent = msgs[Math.min(n-1, msgs.length-1)];
+    $('#char2').classList.remove('shake'); void $('#char2').offsetWidth;
+    $('#char2').classList.add('shake');
+    if(n>=3){ $('#g2hint').textContent='راستی، پروانه‌ها هم منتظرتن! 🦋'; $('#g2hint').className='g-hint warn'; }
+  });
+})();
+
+/* ============ ۳ ============ */
+(function(){
+  $('#g3yes').addEventListener('click', ()=> goTo(3));
+  $('#g3no').addEventListener('click', ()=>{
+    $('#g3hint').textContent = 'قول بده دیگه... تو لایق قشنگ‌ترینایی 🌷';
+    $('#g3hint').className = 'g-hint warn';
+  });
+})();
+
+/* ============ ۴ - آب دادن ============ */
+(function(){
+  let cnt = 0; const max = 5;
+  const tap = $('#waterTap'), fill = $('#plantMeterFill'), hint = $('#g4hint');
+  const stage = $('#plantStage');
+  const stages = ['🌱','🌿','🌿','🍃','🌷','🌸'];
+  tap.addEventListener('click', e=>{
+    if(cnt>=max) return;
+    cnt++;
+    fill.style.width = (cnt/max*100)+'%';
+    hint.textContent = toFa(cnt) + ' از ' + toFa(max);
+    stage.textContent = stages[Math.min(cnt, stages.length-1)];
+    stage.style.transform = `scale(${1 + cnt*0.15})`;
+    const r = document.createElement('div');
+    r.className = 'pop-drop'; r.textContent = '💧';
+    r.style.left = e.clientX+'px'; r.style.top = e.clientY+'px';
+    document.body.appendChild(r);
+    setTimeout(()=> r.remove(), 1500);
+    if(cnt>=max){
+      hint.textContent = 'گلت شکفت! 🌸';
+      hint.className = 'g-hint ok';
+      setTimeout(()=> goTo(4), 900);
+    }
+  });
+})();
+
+/* ============ ۵ - قاصدک ============ */
+(function(){
+  let blown = false;
+  const d = $('#dandelionBody'), hint = $('#g5hint'), wrap = $('#dandelion');
+  wrap.addEventListener('click', ()=>{
+    if(blown) return; blown = true;
+    d.classList.add('blown');
+    hint.textContent = 'آرزوت برآورده بشه ✨';
+    hint.className = 'g-hint ok';
+    /* پخش دانه‌ها */
+    const rect = d.getBoundingClientRect();
+    for(let i=0;i<14;i++){
+      const s = document.createElement('div');
+      s.className = 'seed'; s.textContent = '✿';
+      s.style.left = (rect.left + rect.width/2)+'px';
+      s.style.top = (rect.top + rect.height/2)+'px';
+      s.style.setProperty('--dx', (Math.random()*200-100)+'px');
+      s.style.setProperty('--dy', (-Math.random()*220-100)+'px');
+      s.style.animationDelay = (i*0.05)+'s';
+      s.style.fontSize = (10 + Math.random()*10)+'px';
+      document.body.appendChild(s);
+      setTimeout(()=> s.remove(), 2800);
+    }
+    setTimeout(()=> runCountdown(()=> goTo(5)), 1200);
+  });
+})();
+
+/* ============ ۶ - پروانه‌ها ============ */
+(function(){
+  const field = $('#bfField'), hint = $('#g6hint');
+  const total = 3;
+  let caught = 0;
+  const emojis = ['🦋','🦋','🦋'];
+  for(let i=0;i<total;i++){
+    const bf = document.createElement('div');
+    bf.className = 'bf';
+    bf.textContent = emojis[i];
+    bf.style.left = (15 + i*30 + Math.random()*8) + '%';
+    bf.style.top= (25 + Math.random()*40) + '%';
+    bf.style.animationDuration = (3 + Math.random()*2)+'s';
+    bf.style.animationDelay = (-Math.random()*2)+'s';
+    bf.addEventListener('click', ()=>{
+      if(bf.classList.contains('caught')) return;
+      bf.classList.add('caught');
+      caught++;
+      hint.textContent = toFa(caught) + ' از ' + toFa(total) + ' گرفته شده';
+      if(caught>=total){
+        hint.textContent = 'همه‌ی پروانه‌ها رو گرفتی! 🦋✨';
+        hint.className = 'g-hint ok';
+        setTimeout(()=> goTo(6), 900);
+      }
+    });
+    field.appendChild(bf);
+  }
+})();
+
+/* ============ ۷ - معما ============ */
+(function(){
+  const opts = $$('#gate7 .opt'), hint = $('#g7hint');
+  let wrong = 0;
+  opts.forEach(o=> o.addEventListener('click', ()=>{
+    if(o.dataset.ok === '1'){
+      o.classList.add('right');
+      hint.textContent = 'آفرین! تو خودت جواب معما بودی 🌷';
+      hint.className = 'g-hint ok';
+      setTimeout(()=> goTo(7), 900);
+    } else {
+      o.classList.add('wrong');
+      setTimeout(()=> o.classList.remove('wrong'), 500);
+      wrong++;
+      hint.textContent = wrong<2 ? 'نچ! بازم فکر کن...' : 'راهنمایی: کسی که این هدیه براشه 💗';
+      hint.className = 'g-hint warn';
+    }
+  }));
+})();
+
+/* ============ ۸ - قفل ============ */
+(function(){
+  const input = $('#g8input'), btn = $('#g8btn'), hint = $('#g8hint');
+  btn.addEventListener('click', ()=>{
+    const v = input.value.trim();
+    if(v.length < 2){ hint.textContent='یه اسم حداقل ۲ حرفی بنویس 😊'; hint.className='g-hint warn'; return; }
+    if(/آوا|اوا|ava|aw a/i.test(v)){
+      hint.textContent = 'قفل باغ باز شد! 🌸'; hint.className='g-hint ok';
+      setTimeout(()=> goTo(8), 700);
+    } else {
+      hint.textContent = 'این اسم اون اسم نیست... بازم امتحان کن 🌷'; hint.className='g-hint warn';
+    }
+  });
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter') btn.click(); });
+})();
+
+/* ============ ۹ - بذر جادویی ============ */
+(function(){
+  let planted = false;
+  const seed = $('#seedPlant'), hint = $('#g9hint');
+  seed.addEventListener('click', ()=>{
+    if(planted) return; planted = true;
+    seed.classList.add('planted');
+    setTimeout(()=>{ seed.textContent = '🌷'; }, 500);
+    setTimeout(()=>{ seed.textContent = '🌸'; }, 1000);
+    hint.textContent = 'بذر شکفت و تبدیل به یه گل قشنگ شد 🌸';
+    hint.className = 'g-hint ok';
+    setTimeout(()=> goTo(9), 1800);
+  });
+})();
+
+/* ============ ۱۰ - دسته‌گل ============ */
+(function(){
+  const bqs = $$('#gate10 .bq'), hint = $('#g10hint');
+  const msgs = {
+    rose: 'رز گفت: تو خوشبوترین گل باغی 🌹',
+    tulip: 'لاله گفت: تو بهارِ منی 🌷',
+    cherry: 'شکوفه گفت: تو خودِ بهاری 🌸',
+    sun: 'آفتابگردون گفت: تو نورِ باغی 🌻',
+    lotus: 'نیلوفر گفت: تو پاک‌ترینی 🪷'
+  };
+  let picked = false;
+  bqs.forEach(b=> b.addEventListener('click', ()=>{
+    if(picked) return; picked = true;
+    b.classList.add('chosen');
+    hint.textContent = msgs[b.dataset.flower];
+    hint.className = 'g-hint ok';
+    setTimeout(()=> goTo(10), 1200);
+  }));
+})();
+
+/* ============ ۱۱ و ۱۲ ============ */
+$('#g11btn').addEventListener('click', ()=> goTo(11));
+$('#g12btn').addEventListener('click', ()=> runCountdown(()=> startGift()));
+
+/* ============ ۴۰ پیام ============ */
+const GREETINGS = [
+  {txt:'آوا عزیزم، خواهر گلم، روز دختر مبارک', lang:'fa'},
+  {txt:"Happy Daughter's Day, dear Ava", lang:'en'},
+  {txt:'آوا العزیزة، عید بنت سعید', lang:'ar'},
+  {txt:'Sevgili Ava, mutlu kızlar günü', lang:'tr'},
+  {txt:'Ava chérie, bonne fête', lang:'fr'},
+  {txt:'Ava querida, feliz día', lang:'es'},
+  {txt:'Liebe Ava, schöner Tag', lang:'de'},
+  {txt:'Ava cara, buona festa', lang:'it'},
+  {txt:'Ava, feliz Dia da Menina', lang:'pt'},
+  {txt:'Ава, с праздником', lang:'ru'},
+  {txt:'Ava、こんにちは', lang:'ja'},
+  {txt:'Ava, 안녕', lang:'ko'},
+  {txt:'Ava, 你好', lang:'zh'},
+  {txt:'आवा, शुभ दिन', lang:'hi'},
+  {txt:'आवा, खुश रहो', lang:'ne'},
+  {txt:'Ava, শুভ দিন', lang:'bn'},
+  {txt:'آوا، مبارک', lang:'ur'},
+  {txt:'آوا، مبارک', lang:'ps'},
+  {txt:'Ava, günaydın', lang:'az'},
+  {txt:'Ava, καλή μέρα', lang:'el'},
+  {txt:'Ava, буен дан', lang:'sr'},
+  {txt:'Ava, dobar dan', lang:'hr'},
+  {txt:'Ava, dzień dobry', lang:'pl'},
+  {txt:'Ava, dobrý den', lang:'cs'},
+  {txt:'Ava, jó napot', lang:'hu'},
+  {txt:'Ava, bună ziua', lang:'ro'},
+  {txt:'Ava, добър ден', lang:'bg'},
+  {txt:'Ava, hyvää päivää', lang:'fi'},
+  {txt:'Ava, god dag', lang:'sv'},
+  {txt:'Ava, god dag', lang:'no'},
+  {txt:'Ava, goddag', lang:'da'},
+  {txt:'Ava, goeie dag', lang:'af'},
+  {txt:'Ava, sawubona', lang:'zu'},
+  {txt:'Ava, jambo', lang:'sw'},
+  {txt:'Ava, habari', lang:'am'},
+  {txt:'Ava, שלום', lang:'he'},
+  {txt:'Ava, สวัสดี', lang:'th'},
+  {txt:'Ava, xin chào', lang:'vi'},
+  {txt:'Ava, selamat', lang:'id'},
+  {txt:'Ava, kumusta', lang:'tl'}
+];
+
+/* ============ نقاط روی علامت بی‌نهایت (∞) ============ */
+/* Lemniscate of Bernoulli - نمای زیبا و متقارن */
+const INF = { a: 340 };  // مقیاس
+function infinityPoint(t){
+  /* t از 0 تا 2π */
+  const s = Math.sin(t), c = Math.cos(t);
+  const denom = 1 + s*s;
+  const x = INF.a * c / denom;
+  const y = INF.a * s * c / denom * 0.9;
+  return { x: 500 + x, y: 500 - y };
+}
+
+/* ============ باغ فرود (گلبرگ + دانه قاصدک + پروانه) ============ */
+function makeGarden(){
+  const garden = $('#garden');
+  const floaters = ['🌸','🌷','🌸','🌺','🪷','🌼','💮','🦋','🦋','🌺','🌸','🌷'];
+  const count = IS_MOBILE ? 65 : 100;
+  for(let i=0;i<count;i++){
+    const f = document.createElement('div');
+    f.className = 'float-el';
+    const inner = document.createElement('span');
+    inner.className = 'float-el-inner';
+    inner.textContent = floaters[Math.floor(Math.random()*floaters.length)];
+    inner.style.fontSize = (14 + Math.random()*24)+'px';
+    f.appendChild(inner);
+    f.style.left = (Math.random()*100)+'vw';
+    f.style.animationDuration = (9 + Math.random()*11)+'s';
+    f.style.animationDelay = (-Math.random()*14)+'s';
+    inner.style.animationDuration = (2 + Math.random()*2.5)+'s';
+    inner.style.animationDelay = (-Math.random()*3)+'s';
+    garden.appendChild(f);
+  }
+
+  /* دانه‌های قاصدک که آروم توی باد شناورن */
+  const seedCount = IS_MOBILE ? 20 : 35;
+  for(let i=0;i<seedCount;i++){
+    const s = document.createElement('div');
+    s.className = 'dandy-seed';
+    s.textContent = '✿';
+    s.style.left = (Math.random()*100)+'vw';
+    s.style.top = (60 + Math.random()*40)+'vh';
+    s.style.fontSize = (10 + Math.random()*8)+'px';
+    s.style.setProperty('--dx', (Math.random()*200-100)+'px');
+    s.style.animationDuration = (10 + Math.random()*8)+'s';
+    s.style.animationDelay = (-Math.random()*12)+'s';
+    garden.appendChild(s);
+  }
+}
+
+/* ============ شروع هدیه ============ */
+let giftStarted = false;
+function startGift(){
+  if(giftStarted) return;
+  giftStarted = true;
+  gateEls[cur].classList.remove('active');
+  $('#gift').classList.add('show');
+
+  /* مقیاس */
+  function setScale(){
+    const ref = IS_MOBILE ? 900 : 1000;
+    const s = Math.min(window.innerWidth/ref, window.innerHeight/ref) * (IS_MOBILE ? 0.95 : 1);
+    $('#stage').style.setProperty('--stage-scale', s);
+  }
+  setScale();
+  window.addEventListener('resize', ()=> setScale());
+  window.addEventListener('orientationchange', ()=> setTimeout(setScale, 200));
+
+  /* فونت پایه */
+  const BASE_FS = IS_MOBILE ? 22 : 13;
+
+  /* چیدمان ۴۰ پیام روی علامت بی‌نهایت */
+  const heartWords = $('#heartWords');
+  const N = GREETINGS.length;
+
+  /* ترتیب متفاوت برای جذابیت: مختلط */
+  const sorted = [...GREETINGS].sort((a,b)=> b.txt.length - a.txt.length);
+
+  for(let i=0;i<N;i++){
+    const t = (i / N) * Math.PI * 2 + Math.PI;  /* شروع از وسط راست */
+    const p = infinityPoint(t);
+    const g = sorted[i];
+
+    const el = document.createElement('div');
+    el.className = 'hw';
+    el.textContent = g.txt;
+
+    let fs = BASE_FS;
+    if(g.lang === 'fa') fs = BASE_FS + 2;
+    if(g.txt.length > 28) fs = Math.max(IS_MOBILE ? 13 : 8, fs - 2);
+
+    el.style.fontSize = fs + 'px';
+    el.style.left = p.x + 'px';
+    el.style.top  = p.y + 'px';
+
+    /* چرخش ملایم بر اساس موقعیت */
+    const rot = -Math.atan2(p.x - 500, -(p.y - 500)) * 180 / Math.PI * 0.12;
+    el.dataset.rot = rot.toFixed(2);
+    el.style.transform= `translate(-50%,-50%) translateY(22px) scale(.78) rotate(${rot}deg)`;
+    heartWords.appendChild(el);
+  }
+
+  /* ظاهر شدن دونه دونه — از راست به چپ */
+  const wordEls = Array.from(heartWords.children);
+  const delayStart = 500;
+  const perWord = IS_MOBILE ? 80 : 90;
+  wordEls.forEach((el, i)=>{
+    setTimeout(()=>{
+      el.classList.add('on');
+      el.style.transform = `translate(-50%,-50%) translateY(0) scale(1) rotate(${el.dataset.rot}deg)`;
+    }, delayStart + i*perWord);
+  });
+
+  const totalWords = delayStart + wordEls.length*perWord + 700;
+
+  /* بعد از اتمام متن‌ها */
+  setTimeout(()=>{
+    /* فلش طلایی + sweep */
+    $('#flash').classList.add('go');
+    $('#sweep').classList.add('go');
+    setTimeout(()=>{
+      $('#flash').classList.remove('go');
+      $('#sweep').classList.remove('go');
+    }, 1800);
+
+    /* متن فارسی بزرگ وسط */
+    const t1 = $('#mainText .l1');
+    const t2 = $('#mainText .l2');
+    if(IS_MOBILE){
+      t1.style.fontSize = '86px';
+      t2.style.fontSize = '46px';
+      $('#mainText').style.top = '46%';
+    } else {
+      t1.style.fontSize = '80px';
+      t2.style.fontSize = '42px';
+    }
+    setTimeout(()=> $('#mainText').classList.add('on'), 250);
+
+    /* گل رز بزرگ پشت با تپش */
+    setTimeout(()=> $('#roseGlow').classList.add('on'), 700);
+
+    /* باغ فرود */
+    setTimeout(()=> makeGarden(), 1200);
+
+    /* یادداشت پایین */
+    setTimeout(()=> $('#finalNote').classList.add('on'), 2800);
+  }, totalWords);
+}
+
+/* ============ ریست ============ */
+$('#replay').addEventListener('click', ()=> location.reload());
+</script>
+</body>
+</html>
